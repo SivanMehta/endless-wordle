@@ -4,6 +4,6 @@ My attempt to recreate the [Wordle](https://www.powerlanguage.co.uk/wordle/) gam
 
 # Task list
 
-- [ ] implementation of a wordle game
+- [x] implementation of a wordle game
 - [ ] implementation difficulty
 - [ ] styling
