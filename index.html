@@ -5,7 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Endless Wordle</title>
     <style>
+      .guess {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 72px;
+        width: fit-content;
+      }
 
+      .guess > span {
+        border: black solid 1px;
+      }
+      
+      .guess.submitted > span {
+        background-color: grey;
+      }
     </style>
   </head>
   <body>

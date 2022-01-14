@@ -14,5 +14,6 @@ export async function getWord(difficulty) {
     .filter(word => word.length === difficulty);
 
   // pick random element of array
-  return candidates[Math.floor(Math.random() * candidates.length)];
+  const word = candidates[Math.floor(Math.random() * candidates.length)];
+  return { word, dictionary: new Set(candidates) };
 }

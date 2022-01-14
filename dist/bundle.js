@@ -7689,17 +7689,101 @@
 	  const words = await response.text();
 	  const candidates = words.split("\n").filter(word => word.length === difficulty); // pick random element of array
 
-	  return candidates[Math.floor(Math.random() * candidates.length)];
+	  const word = candidates[Math.floor(Math.random() * candidates.length)];
+	  return {
+	    word,
+	    dictionary: new Set(candidates)
+	  };
+	}
+
+	function Guess({
+	  word,
+	  guess,
+	  submitted
+	}) {
+	  if (!guess) return null;
+	  return /*#__PURE__*/react.createElement("div", {
+	    className: 'guess ' + (submitted && 'submitted')
+	  }, guess.split("").map((letter, i) => /*#__PURE__*/react.createElement("span", {
+	    key: i
+	  }, letter)));
+	}
+
+	function Input({
+	  guess,
+	  setGuess,
+	  word
+	}) {
+	  return /*#__PURE__*/react.createElement("input", {
+	    type: "text",
+	    value: guess,
+	    onChange: e => setGuess(e.target.value.slice(0, word.length).toUpperCase()) // limit to word length
+
+	  });
+	}
+
+	function Submit({
+	  onSubmit
+	}) {
+	  return /*#__PURE__*/react.createElement("button", {
+	    type: "submit",
+	    onClick: onSubmit
+	  }, "Submit");
+	}
+
+	function Board({
+	  word
+	}) {
+	  const [guesses, setGuesses] = react.useState(['ABBEY', 'TINNI', 'BARBE']);
+	  const [guess, setGuess] = react.useState('');
+
+	  function submit() {
+	    if (guess.length !== word.length) return;
+	    setGuesses([...guesses, guess]);
+	    setGuess('');
+	  }
+
+	  return /*#__PURE__*/react.createElement(react.Fragment, null, guesses.map((guess, i) => /*#__PURE__*/react.createElement(Guess, {
+	    key: i,
+	    word: word,
+	    guess: guess,
+	    submitted: true
+	  })), /*#__PURE__*/react.createElement(Guess, {
+	    word: word,
+	    guess: guess,
+	    submitted: false
+	  }), /*#__PURE__*/react.createElement(Input, {
+	    word: word,
+	    guess: guess,
+	    setGuess: setGuess,
+	    onSubmit: submit
+	  }), /*#__PURE__*/react.createElement("br", null), /*#__PURE__*/react.createElement(Submit, {
+	    onSubmit: submit
+	  }));
 	}
 
 	function App() {
-	  const [word, setword] = react.useState(false);
-	  const [ready, setReady] = react.useState(false);
+	  const [state, setState] = react.useState({
+	    word: '',
+	    ready: false,
+	    dictionary: {}
+	  });
+	  const {
+	    word,
+	    ready,
+	    dictionary
+	  } = state;
 
 	  const loadWords = async () => {
-	    const word = await getWord(5);
-	    setword(word);
-	    setReady(true);
+	    const {
+	      word,
+	      dictionary
+	    } = await getWord(5);
+	    setState({
+	      word,
+	      dictionary,
+	      ready: true
+	    });
 	  };
 
 	  react.useEffect(() => {
@@ -7709,12 +7793,14 @@
 	  });
 
 	  if (!ready) {
-	    return /*#__PURE__*/react.createElement("div", null, "Loading...");
+	    return /*#__PURE__*/react.createElement("h1", null, "loading ...");
 	  }
 
 	  return /*#__PURE__*/react.createElement("div", {
 	    className: "container"
-	  }, /*#__PURE__*/react.createElement("h1", null, word));
+	  }, /*#__PURE__*/react.createElement("h1", null, word), /*#__PURE__*/react.createElement(Board, {
+	    word: word
+	  }));
 	}
 
 	reactDom.render( /*#__PURE__*/react.createElement(App, null), document.querySelector('#root'));
