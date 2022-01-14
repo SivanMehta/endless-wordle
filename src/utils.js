@@ -10,7 +10,7 @@ export async function getWord(difficulty) {
   const words = await response.text();
 
   const candidates =  words
-    .split("\n")
+    .split(", ")
     .filter(word => word.length === difficulty);
 
   // pick random element of array
