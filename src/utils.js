@@ -6,7 +6,7 @@
  * @returns {String} a random word of the desired length
  */
 export async function getWord(difficulty) {
-  const response = await fetch('/dictionary.txt');
+  const response = await fetch(window.location.href + '/dictionary.txt');
   const words = await response.text();
 
   const candidates =  words
