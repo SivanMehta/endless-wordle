@@ -1,4 +1,9 @@
-Using [Tesseract] to interpret images in-browser. Also help from [rollup]
+# Endless Wordle
 
-[Tesseract]: https://github.com/naptha/tesseract.js
-[rollup]: https://rollupjs.org/guide/en/
+My attempt to recreate the [Wordle](https://www.powerlanguage.co.uk/wordle/) game. This is mostly for my own coding practice
+
+# Task list
+
+- [ ] implementation of a wordle game
+- [ ] implementation difficulty
+- [ ] styling
