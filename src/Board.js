@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { generateColors } from './utils';
+import { generateColors, generateEmojis } from './utils';
 
 function Guess({ word, guess, submitted }) {
   let colors = new Array(word.length).fill('false');
@@ -29,9 +29,34 @@ function Submit({ onSubmit }) {
   return <button type='submit' onClick={ onSubmit }>Submit</button>
 }
 
+function Result({ outcome, word, guesses }) {
+  if(outcome == 0) return null;
+
+  if(outcome == 1) {
+    const emojis = generateEmojis(word, guesses);
+    return (
+      <pre>
+        { emojis }
+      </pre>
+    )
+  }
+
+  if(outcome == 2) {
+    return (
+      <>
+        <p>You lose =(</p>
+        <p>The word was { word }</p>
+      </>
+    );
+  }
+}
+
+
 export default function Board({ word }) {
   const [ guesses, setGuesses ] = useState([]);
   const [ guess, setGuess ] = useState('');
+  const [ outcome, setOutcome ] = useState(0);
+  const [ done, setDone ] = useState(false);
 
   function submit() {
     if(guess.length === 0) return;
@@ -39,22 +64,27 @@ export default function Board({ word }) {
     setGuess('');
   }
 
-  if(guesses[guesses.length - 1] === word) {
-    alert('You win!');
+  if(!done) {
+    if(guesses[guesses.length - 1] === word) {
+      setOutcome(1);
+      setDone(true);
+    } else if(guesses.length > 5) {
+      setOutcome(2);
+      setDone(true);
+    }
   }
-
-  if(guesses.length > 5) {
-    alert('You lose =( \nThe word was ' + word);;
-  }
-
 
   return (
     <>
-      { guesses.map((guess, i) => <Guess key={ i } word={ word } guess={ guess } submitted={ true }/>) }
+      { guesses.map((g, i) => <Guess key={ i } word={ word } guess={ g } submitted={ true }/>) }
       <Guess word={ word } guess={ guess } submitted={ false }/>
       <Input word={ word } guess={ guess } setGuess={ setGuess } onSubmit={submit} />
       <br />
       <Submit onSubmit={ submit }/>
+      <Result
+        outcome={ outcome }
+        word={ word }
+        guesses={ guesses }/>
     </>
   )
 }

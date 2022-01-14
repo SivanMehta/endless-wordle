@@ -9,17 +9,15 @@ async function sleep(ms) {
 function App() {
   const [ state, setState ] = useState({
     word: '',
-    ready: false,
-    dictionary: {}
+    ready: false
   });
-  const { word, ready, dictionary } = state;
+  const { word, ready } = state;
 
   const loadWords = async () => {
-    const { word, dictionary } = await getWord(5);
+    const word = await getWord(5);
 
     setState({
       word,
-      dictionary,
       ready: true
     });
   };
@@ -38,7 +36,7 @@ function App() {
 
   return (
     <div className='container'>
-      <Board word={ word }/>
+      <Board word={ word } />
     </div>
   );
 }

@@ -11,7 +11,8 @@ function hasDoubleLetters(word) {
 }
 
 /**
- * Get random of word of desired length
+ * Get random of word of desired length.
+ * Words are taken from a dictionary derived from https://en.wiktionary.org/wiki/Appendix:1000_basic_English_words
  *
  * @async
  * @param {Number} difficulty length of the desired word 
@@ -25,8 +26,7 @@ export async function getWord(difficulty) {
     .split(", ")
     .filter(word => word.length === difficulty && !hasDoubleLetters(word));
 
-  const word = candidates[Math.floor(Math.random() * candidates.length)].toUpperCase();
-  return { word, dictionary: new Set(candidates) };
+  return candidates[Math.floor(Math.random() * candidates.length)].toUpperCase();
 }
 
 /**
@@ -48,9 +48,31 @@ export function generateColors(word, guess) {
     } else if(letters.has(guessLetters[i])) {
       colors.push('misplaced');
     } else {
-      colors.push('incorrect');
+      colors.push('wrong');
     }
   }
 
   return colors;
+}
+
+function collapse(arr) {
+  return arr.reduce((acc, curr) => acc.concat(curr), []);
+}
+
+export function useMergeState(initialState) {
+  const [state, setState] = useState(initialState);
+  const setMergedState = newState => 
+    setState(prevState => Object.assign({}, prevState, newState)
+  );
+  return [state, setMergedState];
+}
+
+export function generateEmojis(word, guesses) {
+  return guesses
+    .map(guess => generateColors(word, guess))
+    .join('\n')
+    .replaceAll(',', '')
+    .replaceAll('correct', '🟩')
+    .replaceAll('misplaced', '🟨')
+    .replaceAll('wrong', '🟥');
 }

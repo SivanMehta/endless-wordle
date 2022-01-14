@@ -7689,7 +7689,8 @@
 	  return word.match(/(.)\1/);
 	}
 	/**
-	 * Get random of word of desired length
+	 * Get random of word of desired length.
+	 * Words are taken from a dictionary derived from https://en.wiktionary.org/wiki/Appendix:1000_basic_English_words
 	 *
 	 * @async
 	 * @param {Number} difficulty length of the desired word 
@@ -7701,11 +7702,7 @@
 	  const response = await fetch(window.location.href + '/dictionary.txt');
 	  const words = await response.text();
 	  const candidates = words.split(", ").filter(word => word.length === difficulty && !hasDoubleLetters(word));
-	  const word = candidates[Math.floor(Math.random() * candidates.length)].toUpperCase();
-	  return {
-	    word,
-	    dictionary: new Set(candidates)
-	  };
+	  return candidates[Math.floor(Math.random() * candidates.length)].toUpperCase();
 	}
 	/**
 	 * Generate an array of colors for a guess based on the word
@@ -7727,11 +7724,14 @@
 	    } else if (letters.has(guessLetters[i])) {
 	      colors.push('misplaced');
 	    } else {
-	      colors.push('incorrect');
+	      colors.push('wrong');
 	    }
 	  }
 
 	  return colors;
+	}
+	function generateEmojis(word, guesses) {
+	  return guesses.map(guess => generateColors(word, guess)).join('\n').replaceAll(',', '').replaceAll('correct', '🟩').replaceAll('misplaced', '🟨').replaceAll('wrong', '🟥');
 	}
 
 	function Guess({
@@ -7777,11 +7777,30 @@
 	  }, "Submit");
 	}
 
+	function Result({
+	  outcome,
+	  word,
+	  guesses
+	}) {
+	  if (outcome == 0) return null;
+
+	  if (outcome == 1) {
+	    const emojis = generateEmojis(word, guesses);
+	    return /*#__PURE__*/react.createElement("pre", null, emojis);
+	  }
+
+	  if (outcome == 2) {
+	    return /*#__PURE__*/react.createElement(react.Fragment, null, /*#__PURE__*/react.createElement("p", null, "You lose =("), /*#__PURE__*/react.createElement("p", null, "The word was ", word));
+	  }
+	}
+
 	function Board({
 	  word
 	}) {
 	  const [guesses, setGuesses] = react.useState([]);
 	  const [guess, setGuess] = react.useState('');
+	  const [outcome, setOutcome] = react.useState(0);
+	  const [done, setDone] = react.useState(false);
 
 	  function submit() {
 	    if (guess.length === 0) return;
@@ -7789,18 +7808,20 @@
 	    setGuess('');
 	  }
 
-	  if (guesses[guesses.length - 1] === word) {
-	    alert('You win!');
+	  if (!done) {
+	    if (guesses[guesses.length - 1] === word) {
+	      setOutcome(1);
+	      setDone(true);
+	    } else if (guesses.length > 5) {
+	      setOutcome(2);
+	      setDone(true);
+	    }
 	  }
 
-	  if (guesses.length > 5) {
-	    alert('You lose =( \nThe word was ' + word);
-	  }
-
-	  return /*#__PURE__*/react.createElement(react.Fragment, null, guesses.map((guess, i) => /*#__PURE__*/react.createElement(Guess, {
+	  return /*#__PURE__*/react.createElement(react.Fragment, null, guesses.map((g, i) => /*#__PURE__*/react.createElement(Guess, {
 	    key: i,
 	    word: word,
-	    guess: guess,
+	    guess: g,
 	    submitted: true
 	  })), /*#__PURE__*/react.createElement(Guess, {
 	    word: word,
@@ -7813,29 +7834,27 @@
 	    onSubmit: submit
 	  }), /*#__PURE__*/react.createElement("br", null), /*#__PURE__*/react.createElement(Submit, {
 	    onSubmit: submit
+	  }), /*#__PURE__*/react.createElement(Result, {
+	    outcome: outcome,
+	    word: word,
+	    guesses: guesses
 	  }));
 	}
 
 	function App() {
 	  const [state, setState] = react.useState({
 	    word: '',
-	    ready: false,
-	    dictionary: {}
+	    ready: false
 	  });
 	  const {
 	    word,
-	    ready,
-	    dictionary
+	    ready
 	  } = state;
 
 	  const loadWords = async () => {
-	    const {
-	      word,
-	      dictionary
-	    } = await getWord(5);
+	    const word = await getWord(5);
 	    setState({
 	      word,
-	      dictionary,
 	      ready: true
 	    });
 	  };
