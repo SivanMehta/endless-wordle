@@ -7677,25 +7677,44 @@
 	}
 	});
 
-	async function sleep(ms) {
-	  return new Promise(resolve => setTimeout(resolve, ms));
+	/**
+	 * Get random of word of desired length
+	 *
+	 * @async
+	 * @param {Number} difficulty length of the desired word 
+	 * @returns {String} a random word of the desired length
+	 */
+	async function getWord(difficulty) {
+	  const response = await fetch('/dictionary.txt');
+	  const words = await response.text();
+	  const candidates = words.split("\n").filter(word => word.length === difficulty); // pick random element of array
+
+	  return candidates[Math.floor(Math.random() * candidates.length)];
 	}
 
 	function App() {
-	  react.useState(false);
+	  const [word, setword] = react.useState(false);
 	  const [ready, setReady] = react.useState(false);
 
-	  const loadModel = async () => {
-	    await sleep(1000);
+	  const loadWords = async () => {
+	    const word = await getWord(5);
+	    setword(word);
 	    setReady(true);
 	  };
 
 	  react.useEffect(() => {
-	    loadModel();
+	    if (!ready) {
+	      loadWords();
+	    }
 	  });
+
+	  if (!ready) {
+	    return /*#__PURE__*/react.createElement("div", null, "Loading...");
+	  }
+
 	  return /*#__PURE__*/react.createElement("div", {
 	    className: "container"
-	  }, ready ? /*#__PURE__*/react.createElement("h1", null, "Ready") : /*#__PURE__*/react.createElement("h1", null, "Loading..."));
+	  }, /*#__PURE__*/react.createElement("h1", null, word));
 	}
 
 	reactDom.render( /*#__PURE__*/react.createElement(App, null), document.querySelector('#root'));

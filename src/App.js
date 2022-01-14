@@ -1,25 +1,33 @@
 import React, { useState, useEffect } from 'react';
+import { getWord } from './utils';
 
 async function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function App() {
-  const [file, setFile] = useState(false);
+  const [word, setword] = useState(false);
   const [ready, setReady] = useState(false);
 
-  const loadModel = async () => {
-    await sleep(1000);
+  const loadWords = async () => {
+    const word = await getWord(5);
+    setword(word);
     setReady(true);
   };
 
   useEffect(() => {
-    loadModel();
+    if(!ready) {
+      loadWords();
+    }
   });
+
+  if(!ready) {
+    return <div>Loading...</div>
+  }
 
   return (
     <div className='container'>
-      { ready ? <h1>Ready</h1> : <h1>Loading...</h1> }
+      <h1>{ word }</h1>
     </div>
   );
 }
