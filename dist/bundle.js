@@ -7687,9 +7687,8 @@
 	async function getWord(difficulty) {
 	  const response = await fetch(window.location.href + '/dictionary.txt');
 	  const words = await response.text();
-	  const candidates = words.split(", ").filter(word => word.length === difficulty); // pick random element of array
-
-	  const word = candidates[Math.floor(Math.random() * candidates.length)];
+	  const candidates = words.split(", ").filter(word => word.length === difficulty);
+	  const word = candidates[Math.floor(Math.random() * candidates.length)].toUpperCase();
 	  return {
 	    word,
 	    dictionary: new Set(candidates)

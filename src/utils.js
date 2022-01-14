@@ -13,8 +13,7 @@ export async function getWord(difficulty) {
     .split(", ")
     .filter(word => word.length === difficulty);
 
-  // pick random element of array
-  const word = candidates[Math.floor(Math.random() * candidates.length)];
+  const word = candidates[Math.floor(Math.random() * candidates.length)].toUpperCase();
   return { word, dictionary: new Set(candidates) };
 }
 
