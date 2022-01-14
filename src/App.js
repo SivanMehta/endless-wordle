@@ -34,9 +34,10 @@ function App() {
     return <h1>loading ...</h1>
   }
 
+  console.log('This word is: ', word);
+
   return (
     <div className='container'>
-      <h1>{ word }</h1>
       <Board word={ word }/>
     </div>
   );

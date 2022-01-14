@@ -7695,17 +7695,51 @@
 	    dictionary: new Set(candidates)
 	  };
 	}
+	/**
+	 * Generate a map of colors
+	 *
+	 * @export
+	 * @param {*} word correct answer
+	 * @param {*} guess user's guess
+	 */
+
+	function generateColors(word, guess) {
+	  const wordLetters = word.split('');
+	  const guessLetters = guess.split('');
+	  let letters = new Set(wordLetters);
+	  const colors = [];
+
+	  for (let i = 0; i < guess.length; i++) {
+	    if (wordLetters[i] === guessLetters[i]) {
+	      colors.push('correct');
+	    } else if (letters.has(guessLetters[i])) {
+	      colors.push('misplaced');
+	    } else {
+	      colors.push('incorrect');
+	    }
+	  }
+
+	  return colors;
+	}
 
 	function Guess({
 	  word,
 	  guess,
 	  submitted
 	}) {
-	  if (!guess) return null;
+	  let colors = new Array(word.length).fill('false');
+
+	  if (submitted) {
+	    colors = generateColors(word, guess);
+	  }
+
+	  const letters = guess.padEnd(word.length, '-'); // empty space
+
 	  return /*#__PURE__*/react.createElement("div", {
-	    className: 'guess ' + (submitted && 'submitted')
-	  }, guess.split("").map((letter, i) => /*#__PURE__*/react.createElement("span", {
-	    key: i
+	    className: 'guess'
+	  }, letters.split("").map((letter, i) => /*#__PURE__*/react.createElement("span", {
+	    key: i,
+	    className: colors[i]
 	  }, letter)));
 	}
 
@@ -7734,11 +7768,11 @@
 	function Board({
 	  word
 	}) {
-	  const [guesses, setGuesses] = react.useState(['ABBEY', 'TINNI', 'BARBE']);
+	  const [guesses, setGuesses] = react.useState([]);
 	  const [guess, setGuess] = react.useState('');
 
 	  function submit() {
-	    if (guess.length !== word.length) return;
+	    if (guess.length === 0) return;
 	    setGuesses([...guesses, guess]);
 	    setGuess('');
 	  }
@@ -7796,9 +7830,10 @@
 	    return /*#__PURE__*/react.createElement("h1", null, "loading ...");
 	  }
 
+	  console.log('This word is: ', word);
 	  return /*#__PURE__*/react.createElement("div", {
 	    className: "container"
-	  }, /*#__PURE__*/react.createElement("h1", null, word), /*#__PURE__*/react.createElement(Board, {
+	  }, /*#__PURE__*/react.createElement(Board, {
 	    word: word
 	  }));
 	}
