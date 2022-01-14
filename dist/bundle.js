@@ -7838,7 +7838,7 @@
 	    return /*#__PURE__*/react.createElement("h1", null, "loading ...");
 	  }
 
-	  console.log('This word is: ', word);
+	  console.log('This word is:', word);
 	  return /*#__PURE__*/react.createElement("div", {
 	    className: "container"
 	  }, /*#__PURE__*/react.createElement(Board, {
