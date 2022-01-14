@@ -7777,6 +7777,14 @@
 	    setGuess('');
 	  }
 
+	  if (guess.length === 6) {
+	    alert('You lose!');
+	  }
+
+	  if (guesses[guesses.length - 1] === word) {
+	    alert('You win!');
+	  }
+
 	  return /*#__PURE__*/react.createElement(react.Fragment, null, guesses.map((guess, i) => /*#__PURE__*/react.createElement(Guess, {
 	    key: i,
 	    word: word,

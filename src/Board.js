@@ -38,6 +38,14 @@ export default function Board({ word }) {
     setGuesses([...guesses, guess]);
     setGuess('');
   }
+
+  if(guess.length === 6) {
+    alert('You lose!');
+  }
+
+  if(guesses[guesses.length - 1] === word) {
+    alert('You win!');
+  }
   
   return (
     <>
