@@ -7678,16 +7678,29 @@
 	});
 
 	/**
+	 * Check if function has double letters
+	 *
+	 * regex is a capture group (.) and then the \1 is a refernce to the previous capture group
+	 *
+	 * @param {String} word
+	 * @returns {Boolean}
+	 */
+	function hasDoubleLetters(word) {
+	  return word.match(/(.)\1/);
+	}
+	/**
 	 * Get random of word of desired length
 	 *
 	 * @async
 	 * @param {Number} difficulty length of the desired word 
 	 * @returns {String} a random word of the desired length
 	 */
+
+
 	async function getWord(difficulty) {
 	  const response = await fetch(window.location.href + '/dictionary.txt');
 	  const words = await response.text();
-	  const candidates = words.split(", ").filter(word => word.length === difficulty);
+	  const candidates = words.split(", ").filter(word => word.length === difficulty && !hasDoubleLetters(word));
 	  const word = candidates[Math.floor(Math.random() * candidates.length)].toUpperCase();
 	  return {
 	    word,
@@ -7695,11 +7708,11 @@
 	  };
 	}
 	/**
-	 * Generate a map of colors
+	 * Generate an array of colors for a guess based on the word
 	 *
-	 * @export
-	 * @param {*} word correct answer
-	 * @param {*} guess user's guess
+	 * @param {String} word correct answer
+	 * @param {String} guess user's guess
+	 * @returns {Array[String]} array of colors for each letter of the word
 	 */
 
 	function generateColors(word, guess) {
@@ -7776,12 +7789,12 @@
 	    setGuess('');
 	  }
 
-	  if (guess.length === 6) {
-	    alert('You lose!');
-	  }
-
 	  if (guesses[guesses.length - 1] === word) {
 	    alert('You win!');
+	  }
+
+	  if (guesses.length > 5) {
+	    alert('You lose =( \nThe word was ' + word);
 	  }
 
 	  return /*#__PURE__*/react.createElement(react.Fragment, null, guesses.map((guess, i) => /*#__PURE__*/react.createElement(Guess, {

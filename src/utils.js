@@ -1,4 +1,16 @@
 /**
+ * Check if function has double letters
+ *
+ * regex is a capture group (.) and then the \1 is a refernce to the previous capture group
+ *
+ * @param {String} word
+ * @returns {Boolean}
+ */
+function hasDoubleLetters(word) {
+  return word.match(/(.)\1/);
+}
+
+/**
  * Get random of word of desired length
  *
  * @async
@@ -11,22 +23,18 @@ export async function getWord(difficulty) {
 
   const candidates =  words
     .split(", ")
-    .filter(word => word.length === difficulty);
+    .filter(word => word.length === difficulty && !hasDoubleLetters(word));
 
   const word = candidates[Math.floor(Math.random() * candidates.length)].toUpperCase();
   return { word, dictionary: new Set(candidates) };
 }
 
-const correct = '##6aaa64';
-const incorrect = '#787c7e';
-const misplaced = '#c9b458';
-
 /**
- * Generate a map of colors
+ * Generate an array of colors for a guess based on the word
  *
- * @export
- * @param {*} word correct answer
- * @param {*} guess user's guess
+ * @param {String} word correct answer
+ * @param {String} guess user's guess
+ * @returns {Array[String]} array of colors for each letter of the word
  */
 export function generateColors(word, guess) {
   const wordLetters = word.split('');

@@ -39,14 +39,15 @@ export default function Board({ word }) {
     setGuess('');
   }
 
-  if(guess.length === 6) {
-    alert('You lose!');
-  }
-
   if(guesses[guesses.length - 1] === word) {
     alert('You win!');
   }
-  
+
+  if(guesses.length > 5) {
+    alert('You lose =( \nThe word was ' + word);;
+  }
+
+
   return (
     <>
       { guesses.map((guess, i) => <Guess key={ i } word={ word } guess={ guess } submitted={ true }/>) }
