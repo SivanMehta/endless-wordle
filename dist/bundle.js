@@ -7836,7 +7836,6 @@
 	  const [guess, setGuess] = react.useState('');
 
 	  function submit() {
-	    if (guess.length === 0) return;
 	    setGuesses([...guesses, guess]);
 	    setGuess('');
 	  }
