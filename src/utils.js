@@ -7,7 +7,7 @@
  * @returns {Boolean}
  */
 function hasDoubleLetters(word) {
-  return word.match(/(.)\1/);
+  return new Set(word.split("")).size !== word.length;
 }
 
 /**

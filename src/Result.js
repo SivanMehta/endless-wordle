@@ -5,12 +5,16 @@ export default function Result({ word, guesses }) {
   // win condition
   if(guesses[guesses.length - 1] === word) {
     const emojis = generateEmojis(word, guesses);
+    const score = '🌮'.repeat(6 - guesses.length);
     return (
-      <pre>
-        { emojis }
-      </pre>
+      <div>
+        <p>{ score }</p>
+        <pre>
+          { emojis }
+        </pre>
+      </div>
     )
-  } else if (guesses.length > 5) { // loose condition
+  } else if (guesses.length > 5) { // lose condition
     return (
       <>
         <p>You lose =(</p>

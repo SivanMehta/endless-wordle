@@ -1,5 +1,3 @@
-
-(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
 (function () {
 	'use strict';
 
@@ -7686,7 +7684,7 @@
 	 * @returns {Boolean}
 	 */
 	function hasDoubleLetters(word) {
-	  return word.match(/(.)\1/);
+	  return new Set(word.split("")).size !== word.length;
 	}
 	/**
 	 * Get random of word of desired length.
@@ -7741,9 +7739,10 @@
 	  // win condition
 	  if (guesses[guesses.length - 1] === word) {
 	    const emojis = generateEmojis(word, guesses);
-	    return /*#__PURE__*/react.createElement("pre", null, emojis);
+	    const score = '🌮'.repeat(6 - guesses.length);
+	    return /*#__PURE__*/react.createElement("div", null, /*#__PURE__*/react.createElement("p", null, score), /*#__PURE__*/react.createElement("pre", null, emojis));
 	  } else if (guesses.length > 5) {
-	    // loose condition
+	    // lose condition
 	    return /*#__PURE__*/react.createElement(react.Fragment, null, /*#__PURE__*/react.createElement("p", null, "You lose =("), /*#__PURE__*/react.createElement("p", null, "The word was ", word));
 	  } else {
 	    return null;
