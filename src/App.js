@@ -14,7 +14,7 @@ function App() {
   const { word, ready } = state;
 
   const loadWords = async () => {
-    const word = await getWord(5);
+    const word = await getWord();
 
     setState({
       word,

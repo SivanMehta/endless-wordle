@@ -1,5 +1,5 @@
 import React from 'react';
-import { generateEmojis } from './utils';
+import { generateEmojis, difficulty } from './utils';
 
 export default function Result({ word, guesses }) {
   // win condition
@@ -7,14 +7,12 @@ export default function Result({ word, guesses }) {
     const emojis = generateEmojis(word, guesses);
     const score = '🌮'.repeat(6 - guesses.length);
     return (
-      <div>
+      <pre>
         <p>{ score }</p>
-        <pre>
-          { emojis }
-        </pre>
-      </div>
+        { emojis }
+      </pre>
     )
-  } else if (guesses.length > 5) { // lose condition
+  } else if (guesses.length > difficulty) { // lose condition
     return (
       <>
         <p>You lose =(</p>

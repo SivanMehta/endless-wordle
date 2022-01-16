@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { generateColors, generateEmojis } from './utils';
+import { generateColors, generateEmojis, difficultyMap } from './utils';
 import Result from './Result';
 
 function Guess({ word, guess, submitted }) {
@@ -23,6 +23,21 @@ function Input({ guess, setGuess, word }) {
       value={ guess }
       onChange={e => setGuess(e.target.value.slice(0, word.length).toUpperCase()) } // limit to word length
     />
+  )
+}
+
+function Difficulties() {
+  const url = window.location.origin;
+  return (
+    <details>
+      <summary>Difficulties</summary>
+      <nav>
+        <a href={`${url}/?difficulty=easy`}>Easy</a>
+        <a href={`${url}`}>Normal</a>
+        <a href={`${url}/?difficulty=hard`}>Hard</a>
+        <a href={`${url}/?difficulty=impossible`}>Impossible</a>
+      </nav>
+    </details>
   )
 }
 
@@ -50,6 +65,7 @@ export default function Board({ word }) {
       <Result
         word={ word }
         guesses={ guesses }/>
+      <Difficulties />
     </>
   )
 }

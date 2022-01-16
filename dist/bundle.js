@@ -7686,6 +7686,16 @@
 	function hasDoubleLetters(word) {
 	  return new Set(word.split("")).size !== word.length;
 	}
+
+	const difficultyMap = {
+	  easy: 4,
+	  normal: 5,
+	  hard: 7,
+	  impossible: 9
+	};
+	const urlSearchParams = new URLSearchParams(window.location.search);
+	const params = Object.fromEntries(urlSearchParams.entries());
+	const difficulty = difficultyMap[params.difficulty] || difficultyMap.normal;
 	/**
 	 * Get random of word of desired length.
 	 * Words are taken from a dictionary derived from https://en.wiktionary.org/wiki/Appendix:1000_basic_English_words
@@ -7695,11 +7705,10 @@
 	 * @returns {String} a random word of the desired length
 	 */
 
-
-	async function getWord(difficulty) {
-	  const response = await fetch(window.location.href + '/dictionary.txt');
+	async function getWord() {
+	  const response = await fetch(window.location.origin + '/dictionary.txt');
 	  const words = await response.text();
-	  const candidates = words.split(", ").filter(word => word.length === difficulty && !hasDoubleLetters(word));
+	  const candidates = words.split("\n").filter(word => word.length === difficulty && !hasDoubleLetters(word));
 	  return candidates[Math.floor(Math.random() * candidates.length)].toUpperCase();
 	}
 	/**
@@ -7740,8 +7749,8 @@
 	  if (guesses[guesses.length - 1] === word) {
 	    const emojis = generateEmojis(word, guesses);
 	    const score = '🌮'.repeat(6 - guesses.length);
-	    return /*#__PURE__*/react.createElement("div", null, /*#__PURE__*/react.createElement("p", null, score), /*#__PURE__*/react.createElement("pre", null, emojis));
-	  } else if (guesses.length > 5) {
+	    return /*#__PURE__*/react.createElement("pre", null, /*#__PURE__*/react.createElement("p", null, score), emojis);
+	  } else if (guesses.length > difficulty) {
 	    // lose condition
 	    return /*#__PURE__*/react.createElement(react.Fragment, null, /*#__PURE__*/react.createElement("p", null, "You lose =("), /*#__PURE__*/react.createElement("p", null, "The word was ", word));
 	  } else {
@@ -7781,6 +7790,19 @@
 	    onChange: e => setGuess(e.target.value.slice(0, word.length).toUpperCase()) // limit to word length
 
 	  });
+	}
+
+	function Difficulties() {
+	  const url = window.location.origin;
+	  return /*#__PURE__*/react.createElement("details", null, /*#__PURE__*/react.createElement("summary", null, "Difficulties"), /*#__PURE__*/react.createElement("nav", null, /*#__PURE__*/react.createElement("a", {
+	    href: `${url}/?difficulty=easy`
+	  }, "Easy"), /*#__PURE__*/react.createElement("a", {
+	    href: `${url}`
+	  }, "Normal"), /*#__PURE__*/react.createElement("a", {
+	    href: `${url}/?difficulty=hard`
+	  }, "Hard"), /*#__PURE__*/react.createElement("a", {
+	    href: `${url}/?difficulty=impossible`
+	  }, "Impossible")));
 	}
 
 	function Submit({
@@ -7823,7 +7845,7 @@
 	  }), /*#__PURE__*/react.createElement(Result, {
 	    word: word,
 	    guesses: guesses
-	  }));
+	  }), /*#__PURE__*/react.createElement(Difficulties, null));
 	}
 
 	function App() {
@@ -7837,7 +7859,7 @@
 	  } = state;
 
 	  const loadWords = async () => {
-	    const word = await getWord(5);
+	    const word = await getWord();
 	    setState({
 	      word,
 	      ready: true
