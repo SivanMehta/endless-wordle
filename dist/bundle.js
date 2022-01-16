@@ -7706,7 +7706,8 @@
 	 */
 
 	async function getWord() {
-	  const response = await fetch(window.location.origin + '/dictionary.txt');
+	  const url = window.location.origin + window.location.pathname;
+	  const response = await fetch(url + '/dictionary.txt');
 	  const words = await response.text();
 	  const candidates = words.split("\n").filter(word => word.length === difficulty && !hasDoubleLetters(word));
 	  return candidates[Math.floor(Math.random() * candidates.length)].toUpperCase();

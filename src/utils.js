@@ -30,7 +30,8 @@ export const difficulty = difficultyMap[params.difficulty] || difficultyMap.norm
  * @returns {String} a random word of the desired length
  */
 export async function getWord() {
-  const response = await fetch(window.location.origin + '/dictionary.txt');
+  const url = window.location.origin + window.location.pathname;
+  const response = await fetch(url + '/dictionary.txt');
   const words = await response.text();
 
   const candidates =  words
