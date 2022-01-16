@@ -4,15 +4,21 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Endless Wordle</title>
-    <style>
+    <style>      
       .guess {
         font-family: 'Courier New', Courier, monospace;
-        font-size: 48px;
-        width: fit-content;
+        width: 100%;
+        display: flex;
+        justify-content: center;
       }
-
-      .guess > span {
+      
+      .tile {
+        font-size: 2.5rem;
+        width: 3rem;
+        text-align: center;
         border: black solid 1px;
+        font-weight: bold;
+        font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
       }
 
       .correct { background-color: #6aaa64; }

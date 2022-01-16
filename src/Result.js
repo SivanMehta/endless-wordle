@@ -5,7 +5,7 @@ export default function Result({ word, guesses }) {
   // win condition
   if(guesses[guesses.length - 1] === word) {
     const emojis = generateEmojis(word, guesses);
-    const score = '🌮'.repeat(6 - guesses.length);
+    const score = '🌮'.repeat(difficulty - guesses.length);
     return (
       <pre>
         <p>{ score }</p>

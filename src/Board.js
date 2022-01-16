@@ -8,10 +8,15 @@ function Guess({ word, guess, submitted }) {
     colors = generateColors(word, guess);
   }
 
-  const letters = guess.padEnd(word.length, '-'); // empty space
+  const letters = guess
+    .padEnd(word.length, '-') // empty space
+    .split("")
+    .map((letter, i) => (
+      <div key={ i } className={ `tile ${colors[i]}` }>{ letter }</div>
+    ));
   return (
-    <div className={'guess'}>
-      { letters.split("").map((letter, i) => <span key={ i } className={ colors[i] }>{ letter }</span>) }
+    <div className='guess'>
+      { letters }
     </div>
   );
 }
@@ -19,6 +24,7 @@ function Guess({ word, guess, submitted }) {
 function Input({ guess, setGuess, word }) {
   return (
     <input
+      className='guess'
       type='text'
       value={ guess }
       onChange={e => setGuess(e.target.value.slice(0, word.length).toUpperCase()) } // limit to word length

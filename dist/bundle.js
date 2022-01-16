@@ -7748,7 +7748,7 @@
 	  // win condition
 	  if (guesses[guesses.length - 1] === word) {
 	    const emojis = generateEmojis(word, guesses);
-	    const score = '🌮'.repeat(6 - guesses.length);
+	    const score = '🌮'.repeat(difficulty - guesses.length);
 	    return /*#__PURE__*/react.createElement("pre", null, /*#__PURE__*/react.createElement("p", null, score), emojis);
 	  } else if (guesses.length > difficulty) {
 	    // lose condition
@@ -7769,14 +7769,14 @@
 	    colors = generateColors(word, guess);
 	  }
 
-	  const letters = guess.padEnd(word.length, '-'); // empty space
-
-	  return /*#__PURE__*/react.createElement("div", {
-	    className: 'guess'
-	  }, letters.split("").map((letter, i) => /*#__PURE__*/react.createElement("span", {
+	  const letters = guess.padEnd(word.length, '-') // empty space
+	  .split("").map((letter, i) => /*#__PURE__*/react.createElement("div", {
 	    key: i,
-	    className: colors[i]
-	  }, letter)));
+	    className: `tile ${colors[i]}`
+	  }, letter));
+	  return /*#__PURE__*/react.createElement("div", {
+	    className: "guess"
+	  }, letters);
 	}
 
 	function Input({
@@ -7785,6 +7785,7 @@
 	  word
 	}) {
 	  return /*#__PURE__*/react.createElement("input", {
+	    className: "guess",
 	    type: "text",
 	    value: guess,
 	    onChange: e => setGuess(e.target.value.slice(0, word.length).toUpperCase()) // limit to word length
