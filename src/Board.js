@@ -47,10 +47,6 @@ function Difficulties() {
   )
 }
 
-function Submit({ onSubmit }) {
-  return <button type='submit' onClick={ onSubmit }>Submit</button>
-}
-
 export default function Board({ word }) {
   const [ guesses, setGuesses ] = useState([]);
   const [ guess, setGuess ] = useState('');
@@ -67,9 +63,10 @@ export default function Board({ word }) {
       <Guess word={ word } guess={ guess } submitted={ false }/>
       <Input word={ word } guess={ guess } setGuess={ setGuess } onSubmit={submit} />
       <br />
-      <Submit onSubmit={ submit }/>
       <Result
+        onSubmit={ submit }
         word={ word }
+        guess={ guess }
         guesses={ guesses }/>
       <Difficulties />
     </>

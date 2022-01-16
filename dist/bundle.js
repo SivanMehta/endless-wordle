@@ -7742,20 +7742,42 @@
 	  return guesses.map(guess => generateColors(word, guess)).join('\n').replaceAll(',', '').replaceAll('correct', '🟩').replaceAll('misplaced', '🟨').replaceAll('wrong', '🟥');
 	}
 
+	function Submit({
+	  onSubmit,
+	  disabled
+	}) {
+	  return /*#__PURE__*/react.createElement("button", {
+	    onClick: onSubmit,
+	    disabled: disabled
+	  }, "Submit");
+	}
+
+	function Reset() {
+	  return /*#__PURE__*/react.createElement("button", {
+	    onClick: () => location.reload()
+	  }, "Reset");
+	}
+
 	function Result({
 	  word,
-	  guesses
+	  guesses,
+	  guess,
+	  onSubmit
 	}) {
-	  // win condition
 	  if (guesses[guesses.length - 1] === word) {
+	    // win condition
 	    const emojis = generateEmojis(word, guesses);
 	    const score = '🌮'.repeat(difficulty - guesses.length + 1);
-	    return /*#__PURE__*/react.createElement("pre", null, /*#__PURE__*/react.createElement("p", null, score), emojis);
+	    return /*#__PURE__*/react.createElement("div", null, /*#__PURE__*/react.createElement(Reset, null), /*#__PURE__*/react.createElement("pre", null, /*#__PURE__*/react.createElement("p", null, score), emojis));
 	  } else if (guesses.length > difficulty) {
 	    // lose condition
-	    return /*#__PURE__*/react.createElement(react.Fragment, null, /*#__PURE__*/react.createElement("p", null, "You lose =("), /*#__PURE__*/react.createElement("p", null, "The word was ", word));
+	    return /*#__PURE__*/react.createElement("div", null, /*#__PURE__*/react.createElement(Reset, null), /*#__PURE__*/react.createElement(react.Fragment, null, /*#__PURE__*/react.createElement("p", null, "You lose =("), /*#__PURE__*/react.createElement("p", null, "The word was ", word)));
 	  } else {
-	    return null;
+	    // active game
+	    return /*#__PURE__*/react.createElement(Submit, {
+	      onSubmit: onSubmit,
+	      disabled: guess.length !== difficulty
+	    });
 	  }
 	}
 
@@ -7807,15 +7829,6 @@
 	  }, "Impossible")));
 	}
 
-	function Submit({
-	  onSubmit
-	}) {
-	  return /*#__PURE__*/react.createElement("button", {
-	    type: "submit",
-	    onClick: onSubmit
-	  }, "Submit");
-	}
-
 	function Board({
 	  word
 	}) {
@@ -7842,10 +7855,10 @@
 	    guess: guess,
 	    setGuess: setGuess,
 	    onSubmit: submit
-	  }), /*#__PURE__*/react.createElement("br", null), /*#__PURE__*/react.createElement(Submit, {
-	    onSubmit: submit
-	  }), /*#__PURE__*/react.createElement(Result, {
+	  }), /*#__PURE__*/react.createElement("br", null), /*#__PURE__*/react.createElement(Result, {
+	    onSubmit: submit,
 	    word: word,
+	    guess: guess,
 	    guesses: guesses
 	  }), /*#__PURE__*/react.createElement(Difficulties, null));
 	}
