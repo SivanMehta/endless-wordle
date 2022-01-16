@@ -7734,6 +7734,22 @@
 	  return guesses.map(guess => generateColors(word, guess)).join('\n').replaceAll(',', '').replaceAll('correct', '🟩').replaceAll('misplaced', '🟨').replaceAll('wrong', '🟥');
 	}
 
+	function Result({
+	  word,
+	  guesses
+	}) {
+	  // win condition
+	  if (guesses[guesses.length - 1] === word) {
+	    const emojis = generateEmojis(word, guesses);
+	    return /*#__PURE__*/react.createElement("pre", null, emojis);
+	  } else if (guesses.length > 5) {
+	    // loose condition
+	    return /*#__PURE__*/react.createElement(react.Fragment, null, /*#__PURE__*/react.createElement("p", null, "You lose =("), /*#__PURE__*/react.createElement("p", null, "The word was ", word));
+	  } else {
+	    return null;
+	  }
+	}
+
 	function Guess({
 	  word,
 	  guess,
@@ -7777,45 +7793,16 @@
 	  }, "Submit");
 	}
 
-	function Result({
-	  outcome,
-	  word,
-	  guesses
-	}) {
-	  if (outcome == 0) return null;
-
-	  if (outcome == 1) {
-	    const emojis = generateEmojis(word, guesses);
-	    return /*#__PURE__*/react.createElement("pre", null, emojis);
-	  }
-
-	  if (outcome == 2) {
-	    return /*#__PURE__*/react.createElement(react.Fragment, null, /*#__PURE__*/react.createElement("p", null, "You lose =("), /*#__PURE__*/react.createElement("p", null, "The word was ", word));
-	  }
-	}
-
 	function Board({
 	  word
 	}) {
 	  const [guesses, setGuesses] = react.useState([]);
 	  const [guess, setGuess] = react.useState('');
-	  const [outcome, setOutcome] = react.useState(0);
-	  const [done, setDone] = react.useState(false);
 
 	  function submit() {
 	    if (guess.length === 0) return;
 	    setGuesses([...guesses, guess]);
 	    setGuess('');
-	  }
-
-	  if (!done) {
-	    if (guesses[guesses.length - 1] === word) {
-	      setOutcome(1);
-	      setDone(true);
-	    } else if (guesses.length > 5) {
-	      setOutcome(2);
-	      setDone(true);
-	    }
 	  }
 
 	  return /*#__PURE__*/react.createElement(react.Fragment, null, guesses.map((g, i) => /*#__PURE__*/react.createElement(Guess, {
@@ -7835,7 +7822,6 @@
 	  }), /*#__PURE__*/react.createElement("br", null), /*#__PURE__*/react.createElement(Submit, {
 	    onSubmit: submit
 	  }), /*#__PURE__*/react.createElement(Result, {
-	    outcome: outcome,
 	    word: word,
 	    guesses: guesses
 	  }));
