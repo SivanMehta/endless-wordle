@@ -33,7 +33,7 @@ function Input({ guess, setGuess, word }) {
 }
 
 function Difficulties() {
-  const url = window.location.origin;
+  const url = window.location.origin + window.location.pathname;
   return (
     <details>
       <summary>Difficulties</summary>

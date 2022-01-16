@@ -7749,7 +7749,7 @@
 	  // win condition
 	  if (guesses[guesses.length - 1] === word) {
 	    const emojis = generateEmojis(word, guesses);
-	    const score = '🌮'.repeat(difficulty - guesses.length);
+	    const score = '🌮'.repeat(difficulty - guesses.length + 1);
 	    return /*#__PURE__*/react.createElement("pre", null, /*#__PURE__*/react.createElement("p", null, score), emojis);
 	  } else if (guesses.length > difficulty) {
 	    // lose condition
@@ -7795,7 +7795,7 @@
 	}
 
 	function Difficulties() {
-	  const url = window.location.origin;
+	  const url = window.location.origin + window.location.pathname;
 	  return /*#__PURE__*/react.createElement("details", null, /*#__PURE__*/react.createElement("summary", null, "Difficulties"), /*#__PURE__*/react.createElement("nav", null, /*#__PURE__*/react.createElement("a", {
 	    href: `${url}/?difficulty=easy`
 	  }, "Easy"), /*#__PURE__*/react.createElement("a", {
