@@ -7797,13 +7797,13 @@
 	function Difficulties() {
 	  const url = window.location.origin + window.location.pathname;
 	  return /*#__PURE__*/react.createElement("details", null, /*#__PURE__*/react.createElement("summary", null, "Difficulties"), /*#__PURE__*/react.createElement("nav", null, /*#__PURE__*/react.createElement("a", {
-	    href: `${url}/?difficulty=easy`
+	    href: `${url}?difficulty=easy`
 	  }, "Easy"), /*#__PURE__*/react.createElement("a", {
 	    href: `${url}`
 	  }, "Normal"), /*#__PURE__*/react.createElement("a", {
-	    href: `${url}/?difficulty=hard`
+	    href: `${url}?difficulty=hard`
 	  }, "Hard"), /*#__PURE__*/react.createElement("a", {
-	    href: `${url}/?difficulty=impossible`
+	    href: `${url}?difficulty=impossible`
 	  }, "Impossible")));
 	}
 

@@ -38,10 +38,10 @@ function Difficulties() {
     <details>
       <summary>Difficulties</summary>
       <nav>
-        <a href={`${url}/?difficulty=easy`}>Easy</a>
+        <a href={`${url}?difficulty=easy`}>Easy</a>
         <a href={`${url}`}>Normal</a>
-        <a href={`${url}/?difficulty=hard`}>Hard</a>
-        <a href={`${url}/?difficulty=impossible`}>Impossible</a>
+        <a href={`${url}?difficulty=hard`}>Hard</a>
+        <a href={`${url}?difficulty=impossible`}>Impossible</a>
       </nav>
     </details>
   )
