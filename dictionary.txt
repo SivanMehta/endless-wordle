@@ -1,6 +1,7 @@
 a
 about
 above
+abbey
 across
 act
 active
@@ -163,9 +164,12 @@ cloudy
 close
 coffee
 coat
+code
+coder
 coin
 cold
 collect
+color
 colour
 comb
 comfortable
@@ -282,7 +286,7 @@ fall
 false
 family
 famous
-far
+fart
 farm
 father
 fast
