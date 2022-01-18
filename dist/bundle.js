@@ -7805,14 +7805,25 @@
 	function Input({
 	  guess,
 	  setGuess,
-	  word
+	  word,
+	  onSubmit
 	}) {
+	  function onChange(e) {
+	    setGuess(e.target.value.slice(0, word.length).toUpperCase());
+	  }
+
+	  function submit(e) {
+	    if (e.key === 'Enter') {
+	      onSubmit();
+	    }
+	  }
+
 	  return /*#__PURE__*/react.createElement("input", {
 	    className: "guess",
 	    type: "text",
 	    value: guess,
-	    onChange: e => setGuess(e.target.value.slice(0, word.length).toUpperCase()) // limit to word length
-
+	    onChange: onChange,
+	    onKeyDown: submit
 	  });
 	}
 

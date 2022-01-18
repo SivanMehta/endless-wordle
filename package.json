@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rollup -c rollup.config.js -w"
+    "build:watch": "rollup -c rollup.config.js -w",
+    "build": "rollup -c rollup.config.js",
+    "test": "echo it works bro I promise"
   },
   "author": "",
   "license": "MIT",

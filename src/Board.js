@@ -21,13 +21,24 @@ function Guess({ word, guess, submitted }) {
   );
 }
 
-function Input({ guess, setGuess, word }) {
+function Input({ guess, setGuess, word, onSubmit }) {
+  function onChange (e) {
+    setGuess(e.target.value.slice(0, word.length).toUpperCase())
+  }
+
+  function submit (e) {
+    if(e.key === 'Enter') {
+      onSubmit();
+    }
+  }
+
   return (
     <input
       className='guess'
       type='text'
       value={ guess }
-      onChange={e => setGuess(e.target.value.slice(0, word.length).toUpperCase()) } // limit to word length
+      onChange={ onChange }
+      onKeyDown={ submit }
     />
   )
 }
@@ -60,7 +71,7 @@ export default function Board({ word }) {
     <>
       { guesses.map((g, i) => <Guess key={ i } word={ word } guess={ g } submitted={ true }/>) }
       <Guess word={ word } guess={ guess } submitted={ false }/>
-      <Input word={ word } guess={ guess } setGuess={ setGuess } onSubmit={submit} />
+      <Input word={ word } guess={ guess } setGuess={ setGuess } onSubmit={ submit } />
       <br />
       <Result
         onSubmit={ submit }

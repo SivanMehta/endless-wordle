@@ -172,6 +172,7 @@ coffee
 coat
 code
 coder
+codes
 coin
 cold
 collect
