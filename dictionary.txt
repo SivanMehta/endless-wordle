@@ -212,6 +212,8 @@ dark
 daughter
 day
 dead
+death
+deathly
 decide
 decrease
 deep

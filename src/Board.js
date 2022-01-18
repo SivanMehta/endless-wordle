@@ -34,6 +34,7 @@ function Input({ guess, setGuess, word, onSubmit }) {
 
   return (
     <input
+      autoFocus
       className='guess'
       type='text'
       value={ guess }

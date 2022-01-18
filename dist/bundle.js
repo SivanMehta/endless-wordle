@@ -7819,6 +7819,7 @@
 	  }
 
 	  return /*#__PURE__*/react.createElement("input", {
+	    autoFocus: true,
 	    className: "guess",
 	    type: "text",
 	    value: guess,
