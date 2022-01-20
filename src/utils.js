@@ -86,5 +86,5 @@ export function generateEmojis(word, guesses) {
     .replaceAll(',', '')
     .replaceAll('correct', '🟩')
     .replaceAll('misplaced', '🟨')
-    .replaceAll('wrong', '🟥');
+    .replaceAll('wrong', '⬛');
 }

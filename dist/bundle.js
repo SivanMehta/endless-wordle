@@ -7739,7 +7739,7 @@
 	  return colors;
 	}
 	function generateEmojis(word, guesses) {
-	  return guesses.map(guess => generateColors(word, guess)).join('\n').replaceAll(',', '').replaceAll('correct', '🟩').replaceAll('misplaced', '🟨').replaceAll('wrong', '🟥');
+	  return guesses.map(guess => generateColors(word, guess)).join('\n').replaceAll(',', '').replaceAll('correct', '🟩').replaceAll('misplaced', '🟨').replaceAll('wrong', '⬛');
 	}
 
 	function Submit({
