@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { generateColors, generateEmojis, difficultyMap } from './utils';
 import Result from './Result';
+import Keyboard from "./Keyboard";
 
 function Guess({ word, guess, submitted }) {
   let colors = new Array(word.length).fill('false');
@@ -72,10 +73,9 @@ export default function Board({ word }) {
     <>
       { guesses.map((g, i) => <Guess key={ i } word={ word } guess={ g } submitted={ true }/>) }
       <Guess word={ word } guess={ guess } submitted={ false }/>
-      <Input word={ word } guess={ guess } setGuess={ setGuess } onSubmit={ submit } />
+      <Keyboard word={ word } guess={ guess } setGuess={ setGuess } onSubmit={ submit } />
       <br />
       <Result
-        onSubmit={ submit }
         word={ word }
         guess={ guess }
         guesses={ guesses }/>

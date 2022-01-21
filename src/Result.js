@@ -1,16 +1,6 @@
 import React from 'react';
 import { generateEmojis, difficulty } from './utils';
 
-function Submit({ onSubmit, disabled }) {
-  return (
-    <button
-      onClick={ onSubmit }
-      disabled={ disabled }>
-        Submit
-    </button>
-  );
-}
-
 function Reset() {
   return (
     <button
@@ -20,7 +10,7 @@ function Reset() {
   );
 }
 
-export default function Result({ word, guesses, guess, onSubmit }) {
+export default function Result({ word, guesses, guess }) {
   if(guesses[guesses.length - 1] === word) { // win condition
     const emojis = generateEmojis(word, guesses);
     const score = '🌮'.repeat(difficulty - guesses.length + 1);
@@ -43,9 +33,7 @@ export default function Result({ word, guesses, guess, onSubmit }) {
         </>
       </div>
     );
-  } else { // active game
-    return (
-      <Submit onSubmit={ onSubmit } disabled={ guess.length !== difficulty } />
-    );
+  } else {
+    return <></>;
   }
 }
