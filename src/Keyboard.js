@@ -1,5 +1,6 @@
 import React from 'react';
 import Keyboard from "react-simple-keyboard";
+import { generateButtonTheme } from './utils';
 
 const layout = {
   'default': [

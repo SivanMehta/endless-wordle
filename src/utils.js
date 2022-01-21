@@ -88,3 +88,16 @@ export function generateEmojis(word, guesses) {
     .replaceAll('misplaced', '🟨')
     .replaceAll('wrong', '⬛');
 }
+
+export function generateButtonTheme(word, guesses) {
+  return [
+    {
+      class: "myCustomClass",
+      buttons: "Q W E R T Y q w e r t y"
+    },
+    {
+      class: "anotherCustomClass",
+      buttons: "Q q"
+    }
+  ]
+}
