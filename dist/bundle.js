@@ -7814,10 +7814,72 @@
 	  }, children);
 	}
 
-	function Reset() {
-	  return /*#__PURE__*/react.createElement("button", {
+	function copyTextToClipboard(input, {
+	  target = document.body
+	} = {}) {
+	  const element = document.createElement('textarea');
+	  const previouslyFocusedElement = document.activeElement;
+	  element.value = input; // Prevent keyboard from showing on mobile
+
+	  element.setAttribute('readonly', '');
+	  element.style.contain = 'strict';
+	  element.style.position = 'absolute';
+	  element.style.left = '-9999px';
+	  element.style.fontSize = '12pt'; // Prevent zooming on iOS
+
+	  const selection = document.getSelection();
+	  let originalRange = false;
+
+	  if (selection.rangeCount > 0) {
+	    originalRange = selection.getRangeAt(0);
+	  }
+
+	  target.append(element);
+	  element.select(); // Explicit selection workaround for iOS
+
+	  element.selectionStart = 0;
+	  element.selectionEnd = input.length;
+	  let isSuccess = false;
+
+	  try {
+	    isSuccess = document.execCommand('copy');
+	  } catch {}
+
+	  element.remove();
+
+	  if (originalRange) {
+	    selection.removeAllRanges();
+	    selection.addRange(originalRange);
+	  } // Get the focus back on the previously focused element, if any
+
+
+	  if (previouslyFocusedElement) {
+	    previouslyFocusedElement.focus();
+	  }
+
+	  return isSuccess;
+	}
+
+	async function share(content) {
+	  try {
+	    await navigator.share({
+	      url: location.href,
+	      text: content
+	    });
+	  } catch (e) {
+	    // expected to throw if navigator share is not supported
+	    copyTextToClipboard(content);
+	  }
+	}
+
+	function Reset({
+	  content
+	}) {
+	  return /*#__PURE__*/react.createElement(react.Fragment, null, /*#__PURE__*/react.createElement("button", {
 	    onClick: () => location.reload()
-	  }, "Reset");
+	  }, "Reset"), /*#__PURE__*/react.createElement("button", {
+	    onClick: () => share(content)
+	  }, "Share"));
 	}
 
 	function Result({
@@ -7827,9 +7889,12 @@
 	}) {
 	  if (guesses[guesses.length - 1] === word) {
 	    // win condition
-	    const emojis = generateEmojis(word, guesses);
 	    const score = '🌮'.repeat(difficulty - guesses.length + 1);
-	    return /*#__PURE__*/react.createElement("div", null, /*#__PURE__*/react.createElement(Reset, null), /*#__PURE__*/react.createElement("pre", null, /*#__PURE__*/react.createElement("p", null, score), emojis));
+	    const emojis = generateEmojis(word, guesses);
+	    const content = score + '\n' + emojis;
+	    return /*#__PURE__*/react.createElement("div", null, /*#__PURE__*/react.createElement(Reset, {
+	      content: content
+	    }), /*#__PURE__*/react.createElement("pre", null, content));
 	  } else if (guesses.length > difficulty) {
 	    // lose condition
 	    return /*#__PURE__*/react.createElement("div", null, /*#__PURE__*/react.createElement(Reset, null), /*#__PURE__*/react.createElement(react.Fragment, null, /*#__PURE__*/react.createElement("p", null, "You lose =("), /*#__PURE__*/react.createElement("p", null, "The word was ", word)));
