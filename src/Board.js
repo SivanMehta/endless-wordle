@@ -37,6 +37,11 @@ function Difficulties() {
   )
 }
 
+// @TODO: ferries props to children
+function Context({ word, guesses, guess, children }) {
+  return null
+}
+
 export default function Board({ word }) {
   const [ guesses, setGuesses ] = useState([]);
   const [ guess, setGuess ] = useState('');
@@ -49,8 +54,16 @@ export default function Board({ word }) {
   return (
     <>
       { guesses.map((g, i) => <Guess key={ i } word={ word } guess={ g } submitted={ true }/>) }
-      <Guess word={ word } guess={ guess } submitted={ false }/>
-      <Keyboard word={ word } guess={ guess } setGuess={ setGuess } onSubmit={ submit } />
+      <Guess
+        word={ word }
+        guess={ guess }
+        submitted={ false }/>
+      <Keyboard
+        word={ word }
+        guess={ guess }
+        guesses={ guesses }
+        setGuess={ setGuess }
+        onSubmit={ submit } />
       <br />
       <Result
         word={ word }

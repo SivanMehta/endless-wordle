@@ -7748,17 +7748,58 @@
 	function generateEmojis(word, guesses) {
 	  return guesses.map(guess => generateColors(word, guess)).join('\n').replaceAll(',', '').replaceAll('correct', '🟩').replaceAll('misplaced', '🟨').replaceAll('wrong', '⬛');
 	}
-	function generateButtonTheme(word, guesses) {
+	/**
+	 * Resolve bucket letters by precedence:
+	 * 1. remove correct and misplaced from wrong
+	 * 2. remove correct from misplaced
+	 */
+
+	function resolveBuckets(buckets) {
+	  let {
+	    wrong,
+	    misplaced,
+	    correct
+	  } = buckets;
+	  wrong = Array.from(wrong).filter(letter => !correct.has(letter) && !misplaced.has(letter));
+	  misplaced = Array.from(misplaced).filter(letter => !correct.has(letter));
+	  correct = Array.from(correct);
 	  return [{
 	    class: "correct",
-	    buttons: "Q W E R T Y"
-	  }, {
-	    class: "wrong",
-	    buttons: "A S D F"
+	    buttons: ' ' + correct.join(' ')
 	  }, {
 	    class: "misplaced",
-	    buttons: "Z X C"
+	    buttons: ' ' + misplaced.join(' ')
+	  }, {
+	    class: "wrong",
+	    buttons: ' ' + wrong.join(' ')
 	  }];
+	}
+	/**
+	 * From a list of guesses, generate the letters that are in the word
+	 *
+	 * @export
+	 * @param {*} word
+	 * @param {*} guesses
+	 * @returns
+	 */
+
+
+	function generateButtonTheme(word, guesses) {
+	  const colors = guesses.map(guess => generateColors(word, guess));
+	  const buckets = {
+	    correct: new Set(),
+	    misplaced: new Set(),
+	    wrong: new Set()
+	  };
+
+	  for (let i = 0; i < guesses.length; i++) {
+	    for (let j = 0; j < word.length; j++) {
+	      const letter = guesses[i].substr(j, 1);
+	      buckets[colors[i][j]].add(letter);
+	    }
+	  }
+
+	  return resolveBuckets(buckets);
 	}
 	function Link({
 	  children,
@@ -13045,7 +13086,7 @@
 	      word,
 	      guesses
 	    } = this.props;
-	    const buttonTheme = generateButtonTheme();
+	    const buttonTheme = generateButtonTheme(word, guesses);
 	    return /*#__PURE__*/react.createElement(Keyboard, {
 	      keyboardRef: r => this.keyboard = r,
 	      maxLength: word.length,
@@ -13091,7 +13132,7 @@
 	  }, "Hard"), /*#__PURE__*/react.createElement(Link, {
 	    href: `${url}?difficulty=impossible`
 	  }, "Impossible")));
-	}
+	} // @TODO: ferries props to children
 
 	function Board({
 	  word
@@ -13116,6 +13157,7 @@
 	  }), /*#__PURE__*/react.createElement(Thing, {
 	    word: word,
 	    guess: guess,
+	    guesses: guesses,
 	    setGuess: setGuess,
 	    onSubmit: submit
 	  }), /*#__PURE__*/react.createElement("br", null), /*#__PURE__*/react.createElement(Result, {
