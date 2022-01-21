@@ -1,3 +1,5 @@
+import React from 'react';
+
 /**
  * Check if function has double letters
  *
@@ -92,12 +94,28 @@ export function generateEmojis(word, guesses) {
 export function generateButtonTheme(word, guesses) {
   return [
     {
-      class: "myCustomClass",
-      buttons: "Q W E R T Y q w e r t y"
+      class: "correct",
+      buttons: "Q W E R T Y"
     },
     {
-      class: "anotherCustomClass",
-      buttons: "Q q"
+      class: "wrong",
+      buttons: "A S D F"
+    },
+    {
+      class: "misplaced",
+      buttons: "Z X C"
     }
   ]
+}
+
+export function Link({ children, href }) {
+  function onClick() {
+    location.href = href;
+  }
+
+  return (
+    <button onClick={ onClick }>
+      {children}
+    </button>
+  );
 }

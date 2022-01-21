@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { generateColors, generateEmojis, difficultyMap } from './utils';
+import { generateColors, generateEmojis, difficultyMap, Link } from './utils';
 import Result from './Result';
 import Keyboard from "./Keyboard";
 
@@ -50,12 +50,12 @@ function Difficulties() {
   return (
     <details>
       <summary>Difficulties</summary>
-      <nav>
-        <a href={`${url}?difficulty=easy`}>Easy</a>
-        <a href={`${url}`}>Normal</a>
-        <a href={`${url}?difficulty=hard`}>Hard</a>
-        <a href={`${url}?difficulty=impossible`}>Impossible</a>
-      </nav>
+      <div>
+        <Link href={`${url}?difficulty=easy`}>Easy</Link>
+        <Link href={`${url}`}>Normal</Link>
+        <Link href={`${url}?difficulty=hard`}>Hard</Link>
+        <Link href={`${url}?difficulty=impossible`}>Impossible</Link>
+      </div>
     </details>
   )
 }
