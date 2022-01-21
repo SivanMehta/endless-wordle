@@ -7689,6 +7689,7 @@
 	 * @param {String} word
 	 * @returns {Boolean}
 	 */
+
 	function hasDoubleLetters(word) {
 	  return new Set(word.split("")).size !== word.length;
 	}
@@ -7746,6 +7747,30 @@
 	}
 	function generateEmojis(word, guesses) {
 	  return guesses.map(guess => generateColors(word, guess)).join('\n').replaceAll(',', '').replaceAll('correct', '🟩').replaceAll('misplaced', '🟨').replaceAll('wrong', '⬛');
+	}
+	function generateButtonTheme(word, guesses) {
+	  return [{
+	    class: "correct",
+	    buttons: "Q W E R T Y"
+	  }, {
+	    class: "wrong",
+	    buttons: "A S D F"
+	  }, {
+	    class: "misplaced",
+	    buttons: "Z X C"
+	  }];
+	}
+	function Link({
+	  children,
+	  href
+	}) {
+	  function onClick() {
+	    location.href = href;
+	  }
+
+	  return /*#__PURE__*/react.createElement("button", {
+	    onClick: onClick
+	  }, children);
 	}
 
 	function Reset() {
@@ -13003,22 +13028,30 @@
 	    this.props.setGuess(e);
 	  };
 	  onKeyPress = key => {
-	    if (key === 'submit') {
-	      this.props.onSubmit();
+	    const {
+	      onSubmit,
+	      guess,
+	      word
+	    } = this.props;
+
+	    if (key === 'submit' && guess.length === word.length) {
+	      onSubmit();
 	      this.keyboard.clearInput();
 	    }
 	  };
 
 	  render() {
 	    const {
-	      word
+	      word,
+	      guesses
 	    } = this.props;
+	    const buttonTheme = generateButtonTheme();
 	    return /*#__PURE__*/react.createElement(Keyboard, {
 	      keyboardRef: r => this.keyboard = r,
 	      maxLength: word.length,
-	      useTouchEvents: true,
 	      layout: layout,
 	      layoutName: "default",
+	      buttonTheme: buttonTheme,
 	      onChange: this.onChange,
 	      onKeyPress: this.onKeyPress
 	    });
@@ -13049,13 +13082,13 @@
 
 	function Difficulties() {
 	  const url = window.location.origin + window.location.pathname;
-	  return /*#__PURE__*/react.createElement("details", null, /*#__PURE__*/react.createElement("summary", null, "Difficulties"), /*#__PURE__*/react.createElement("nav", null, /*#__PURE__*/react.createElement("a", {
+	  return /*#__PURE__*/react.createElement("details", null, /*#__PURE__*/react.createElement("summary", null, "Difficulties"), /*#__PURE__*/react.createElement("div", null, /*#__PURE__*/react.createElement(Link, {
 	    href: `${url}?difficulty=easy`
-	  }, "Easy"), /*#__PURE__*/react.createElement("a", {
+	  }, "Easy"), /*#__PURE__*/react.createElement(Link, {
 	    href: `${url}`
-	  }, "Normal"), /*#__PURE__*/react.createElement("a", {
+	  }, "Normal"), /*#__PURE__*/react.createElement(Link, {
 	    href: `${url}?difficulty=hard`
-	  }, "Hard"), /*#__PURE__*/react.createElement("a", {
+	  }, "Hard"), /*#__PURE__*/react.createElement(Link, {
 	    href: `${url}?difficulty=impossible`
 	  }, "Impossible")));
 	}

@@ -7,6 +7,7 @@ My attempt to recreate the [Wordle](https://www.powerlanguage.co.uk/wordle/) gam
 - [x] implementation of a wordle game
 - [x] implementation difficulty
 - [x] styling
+- [x] on-screen colored keyboard
 
 ## Running Locally
 

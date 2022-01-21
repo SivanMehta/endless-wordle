@@ -22,29 +22,6 @@ function Guess({ word, guess, submitted }) {
   );
 }
 
-function Input({ guess, setGuess, word, onSubmit }) {
-  function onChange (e) {
-    setGuess(e.target.value.slice(0, word.length).toUpperCase())
-  }
-
-  function submit (e) {
-    if(e.key === 'Enter') {
-      onSubmit();
-    }
-  }
-
-  return (
-    <input
-      autoFocus
-      className='guess'
-      type='text'
-      value={ guess }
-      onChange={ onChange }
-      onKeyDown={ submit }
-    />
-  )
-}
-
 function Difficulties() {
   const url = window.location.origin + window.location.pathname;
   return (

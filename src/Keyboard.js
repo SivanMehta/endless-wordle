@@ -17,21 +17,23 @@ export default class Thing extends React.Component {
   }
 
   onKeyPress = (key) => {
-    if(key === 'submit') {
-      this.props.onSubmit();
+    const { onSubmit, guess, word } = this.props;
+    if(key === 'submit' && guess.length === word.length) {
+      onSubmit();
       this.keyboard.clearInput();
     }
   }
 
   render() {
-    const { word } = this.props;
+    const { word, guesses } = this.props;
+    const buttonTheme = generateButtonTheme(word, guesses);
     return (
       <Keyboard
         keyboardRef={r => (this.keyboard = r)}
         maxLength={ word.length }
-        useTouchEvents={true}
         layout={ layout }
         layoutName='default'
+        buttonTheme={ buttonTheme }
         onChange={ this.onChange }
         onKeyPress={ this.onKeyPress }
         />
